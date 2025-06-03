@@ -1,0 +1,24 @@
+.bienvenida-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  background-color: #f9fafb;
+}
+
+
+.bienvenida-titulo {
+  font-size: 2.5rem;
+  color: #2563eb;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.bienvenida-subtitulo {
+  font-size: 1.25rem;
+  color: #4b5563;
+}

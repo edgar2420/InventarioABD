@@ -1,0 +1,167 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #f8f9fa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#root {
+  height: 100%;
+  display: flex;
+}
+
+.unidad-container {
+  display: flex;
+  padding: 20px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.unidad-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 25px 30px;
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.08);
+  height: 100%;
+}
+
+/* Título con ícono */
+.unidad-titulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #0d6efd;
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Input de agregar con botón */
+.unidad-input-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* Inputs (nombre + buscador) */
+.unidad-input,
+.buscador {
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 400;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.unidad-input::placeholder,
+.buscador::placeholder {
+  color: #adb5bd;
+}
+
+.unidad-input:focus,
+.buscador:focus {
+  outline: none;
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.25);
+}
+
+.buscador {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+/* Botón Agregar */
+.unidad-btn.agregar {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.unidad-btn.agregar:hover {
+  background-color: #218838;
+}
+
+/* Mensaje de error */
+.unidad-error {
+  color: red;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+/* Lista de unidades */
+.unidad-lista {
+  flex-grow: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+
+/* Elementos de la lista */
+.unidad-item {
+  background-color: #f5f5f5;
+  color: #000;
+  padding: 10px 15px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+}
+
+/* Input de edición */
+.unidad-edit-input {
+  flex: 1;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  color: #000;
+}
+
+/* Botones de editar y eliminar */
+.unidad-acciones {
+  display: flex;
+  gap: 8px;
+}
+
+.unidad-btn-icon {
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.unidad-btn-icon.edit {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.unidad-btn-icon.delete {
+  background-color: #dc3545;
+  color: #fff;
+}
+

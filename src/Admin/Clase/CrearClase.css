@@ -1,0 +1,206 @@
+/* === CONTENEDOR PRINCIPAL === */
+.clase-container {
+  flex: 1;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f9fafb;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* === CONTENIDO INTERNO === */
+.clase-box {
+  width: 100%;
+  max-width: 1280px;
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* === TÍTULO === */
+.clase-titulo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #1d4ed8;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* === GRID DE CLASES === */
+.clase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+/* === TARJETA DE CLASE === */
+.clase-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: box-shadow 0.2s ease;
+}
+
+.clase-card:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
+/* === CABECERA DE CLASE EXPANDIBLE === */
+.clase-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  transition: background 0.2s ease;
+}
+
+.clase-header:hover {
+  background-color: #f3f4f6;
+}
+
+/* === INPUT NOMBRE DE CLASE === */
+.clase-input {
+  padding: 0.55rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background: #ffffff;
+  color: #111827;
+  width: 100%;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.clase-input:focus {
+  border-color: #2563eb;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+/* === BLOQUE DE TIPOS (NUEVA CLASE) === */
+.tipos-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* === GRUPOS DE INPUT Y BOTONES DE TIPO === */
+.tipo-card,
+.editable-tipo,
+.agregar-nuevo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #f9fafb;
+  padding: 0.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  transition: box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.tipo-card:hover,
+.editable-tipo:hover,
+.agregar-nuevo:hover {
+  background-color: #f3f4f6;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* === INPUT DE TIPO === */
+.tipo-input {
+  flex: 1;
+  height: 2.5rem;
+  line-height: 1.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  background-color: #ffffff !important;
+  color: #111827 !important;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tipo-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
+}
+
+/* === LISTA DE TIPOS === */
+.lista-tipos {
+  margin-top: 0.5rem;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.item-tipo {
+  list-style-type: none;
+}
+
+/* === BOTONES GENERALES === */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+/* === BOTÓN GUARDAR === */
+.btn.guardar {
+  background-color: #10b981;
+  color: white;
+}
+
+.btn.guardar:hover {
+  background-color: #059669;
+}
+
+/* === BOTÓN AÑADIR === */
+.btn.agregar {
+  background-color: #2563eb;
+  color: white;
+}
+
+.btn.agregar:hover {
+  background-color: #1d4ed8;
+}
+
+/* === BOTÓN ELIMINAR === */
+.btn.eliminar {
+  background-color: #ef4444;
+  color: white;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.85rem;
+  height: auto;
+  width: auto;
+}
+
+.btn.eliminar:hover {
+  background-color: #dc2626;
+}

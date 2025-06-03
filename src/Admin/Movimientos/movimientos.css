@@ -1,0 +1,186 @@
+/* Contenedor principal */
+.producto-container {
+  width: 100%;
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: #f3f4f6;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* Caja blanca centrada */
+.form-box {
+  width: 100%;
+  max-width: 1200px;
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Título principal */
+.titulo-lista {
+  font-size: 1.5rem;
+  color: #2563eb;
+  font-weight: bold;
+}
+
+/* Tabla de movimientos */
+.tabla-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.tabla thead {
+  background-color: #f1f5f9;
+}
+
+.tabla th,
+.tabla td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.95rem;
+}
+
+.tabla th {
+  font-weight: 600;
+  color: #374151;
+}
+
+.tabla td {
+  color: #1f2937;
+}
+
+.tabla tr:hover {
+  background-color: #f9fafb;
+}
+
+/* Botón de acción */
+.btn-subir {
+  background-color: #2563eb;
+  color: white;
+  border-radius: 0.375rem;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.btn-subir:hover {
+  background-color: #1e40af;
+}
+
+/* Botón general */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  background-color: #3b82f6;
+  color: white;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-guardar {
+  background-color: #10b981;
+}
+
+.btn-guardar:hover {
+  background-color: #059669;
+}
+
+.btn-navegacion {
+  background-color: #e5e7eb;
+  color: #1f2937;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.btn-navegacion:hover {
+  background-color: #d1d5db;
+}
+
+/* Texto condicional tipo entrada/salida */
+.text-green-600 {
+  color: #10b981 !important;
+}
+
+.text-red-600 {
+  color: #ef4444 !important;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+/* Filtros arriba de la tabla */
+input[type="date"],
+select,
+.input,
+textarea {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  font-size: 0.95rem;
+  background: white;
+  color: #111827;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+input[type="date"]:focus,
+select:focus,
+.input:focus,
+textarea:focus {
+  border-color: #2563eb;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+/* react-select override para claridad */
+.select__control {
+  background-color: #ffffff !important;
+  border-color: #d1d5db !important;
+  border-radius: 0.5rem !important;
+  min-height: 38px;
+  font-size: 0.95rem;
+  box-shadow: none !important;
+}
+
+.select__control--is-focused {
+  border-color: #2563eb !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2) !important;
+}
+
+.select__menu {
+  z-index: 10 !important;
+}
+
+/* Texto sin resultados */
+.no-datos {
+  text-align: center;
+  padding: 1rem;
+  font-style: italic;
+  color: #6b7280;
+}

@@ -1,0 +1,87 @@
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* Sidebar blanco con sombra y padding */
+.sidebar {
+  width: 260px;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Título o logo del menú */
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2563eb;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Botones del menú */
+.nav button {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  background: transparent;
+  color: #374151;
+  border: none;
+  border-radius: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Hover - azul claro */
+.nav button:hover {
+  background-color: #e0e7ff;
+  color: #2563eb;
+}
+
+/* Botón activo */
+.nav .active {
+  background-color: #2563eb;
+  color: white;
+}
+
+/* Botón cerrar sesión */
+.logout {
+  margin-top: auto;
+  color: #ef4444;
+  background-color: #fee2e2;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.logout:hover {
+  background-color: #fecaca;
+  color: #b91c1c;
+}
+
+/* Contenedor principal */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
