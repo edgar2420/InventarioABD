@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_BASE = 'https://backendinventario-v0gb.onrender.com/api'
+const API_BASE = 'http://localhost:3000/api'
 
 // Obtener Clase
 export const obtenerClases = async () => {

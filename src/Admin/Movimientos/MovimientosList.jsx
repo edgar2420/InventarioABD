@@ -12,8 +12,12 @@ const ListaMovimientos = () => {
 
   useEffect(() => {
     const cargar = async () => {
-      const data = await obtenerMovimientos()
-      setMovimientos(data)
+      try {
+        const data = await obtenerMovimientos()
+        setMovimientos(data)
+      } catch (err) {
+        console.error('Error al cargar movimientos:', err)
+      }
     }
     cargar()
   }, [])
@@ -58,9 +62,9 @@ const ListaMovimientos = () => {
           />
         </div>
 
-        {/* Tabla */}
-        <div className="tabla-wrapper">
-          <table className="tabla">
+        {/* Tabla de movimientos */}
+        <div className="tabla-wrapper overflow-x-auto">
+          <table className="tabla min-w-full">
             <thead>
               <tr>
                 <th>Fecha</th>
@@ -91,7 +95,11 @@ const ListaMovimientos = () => {
                     <td>{m.componente_codigo}</td>
                     <td>{m.nombre_componente || '-'}</td>
                     <td>{m.cantidad}</td>
-                    <td>{m.persona || '-'}</td>
+                    <td>
+                      {m.tipo === 'entrada'
+                        ? m.persona_entrega || '-'
+                        : m.persona_responsable || '-'}
+                    </td>
                     <td>{m.orden_trabajo || '-'}</td>
                     <td>{m.observaciones || '-'}</td>
                     <td>
@@ -106,7 +114,9 @@ const ListaMovimientos = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="9" className="no-datos">No hay movimientos registrados</td>
+                  <td colSpan="9" className="no-datos text-center py-4 text-gray-500">
+                    No hay movimientos registrados
+                  </td>
                 </tr>
               )}
             </tbody>

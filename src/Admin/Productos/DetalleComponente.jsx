@@ -38,47 +38,59 @@ const DetalleComponente = () => {
           <h2 className="titulo-lista">
             <PackageOpen size={24} /> Detalle del Componente
           </h2>
-          <button className="btn btn-subir flex items-center gap-2" onClick={() => navigate('/componentes')}>
+          <button
+            className="btn btn-subir flex items-center gap-2"
+            onClick={() => navigate('/componentes')}
+          >
             <ArrowLeftCircle size={18} /> Volver
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start mb-8">
-          <div className="space-y-2">
-            <p><strong>Código:</strong> {componente.codigo}</p>
-            <p><strong>Nombre:</strong> {componente.nombre}</p>
-            <p><strong>Clase:</strong> {componente.clase?.nombre || '-'}</p>
-            <p><strong>Tipo:</strong> {componente.tipo?.nombre || '-'}</p>
-            <p><strong>Modelo:</strong> {componente.modelo}</p>
-            <p><strong>Marca:</strong> {componente.marca}</p>
-            <p><strong>Fabricante:</strong> {componente.fabricante}</p>
-            <p><strong>Unidad de Proceso:</strong> {componente.unidad_proceso?.nombre || '-'}</p>
-            <p><strong>Cantidad:</strong> {componente.cantidad}</p>
-          </div>
-
+        {/* Datos del componente y la imagen */}
+        <div className="flex flex-col md:flex-row gap-8 items-start mb-10">
           {componente.imagen_url && (
-            <div className="text-center">
+            <div className="flex-shrink-0 self-center md:self-start">
               <img
                 src={componente.imagen_url}
                 alt="Imagen del componente"
-                className="imagen-componente mx-auto"
+                className="rounded-lg shadow-md w-60 h-60 object-contain border border-gray-200"
               />
             </div>
           )}
+
+          <div className="flex-1 space-y-3 bg-white p-5 rounded-xl shadow-md border border-gray-100">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <p><strong>Código:</strong> {componente.codigo}</p>
+              <p><strong>Nombre:</strong> {componente.nombre}</p>
+              <p><strong>Clase:</strong> {componente.clase?.nombre || '-'}</p>
+              <p><strong>Tipo:</strong> {componente.tipo?.nombre || '-'}</p>
+              <p><strong>Modelo:</strong> {componente.modelo}</p>
+              <p><strong>Marca:</strong> {componente.marca}</p>
+              <p><strong>Cantidad:</strong> {componente.cantidad}</p>
+            </div>
+
+            <div>
+              <p className="font-semibold mt-2 mb-1">Descripción:</p>
+              <p className="bg-gray-50 border border-gray-200 rounded-md p-3 text-gray-700 text-justify">
+                {componente.descripcion || 'Sin descripción'}
+              </p>
+            </div>
+          </div>
         </div>
 
         <hr className="my-6 border-gray-300" />
 
         <h3 className="text-lg font-semibold text-blue-600 mb-3">Historial de Movimientos</h3>
 
-        <div className="tabla-wrapper">
-          <table className="tabla">
+        <div className="tabla-wrapper overflow-x-auto">
+          <table className="tabla min-w-full">
             <thead>
               <tr>
                 <th>Fecha</th>
                 <th>Tipo</th>
                 <th>Cantidad</th>
                 <th>Persona</th>
+                <th>Unidad Proceso</th>
                 <th>Orden Trabajo</th>
                 <th>Motivo</th>
               </tr>
@@ -98,14 +110,19 @@ const DetalleComponente = () => {
                       {m.tipo.charAt(0).toUpperCase() + m.tipo.slice(1)}
                     </td>
                     <td>{m.cantidad}</td>
-                    <td>{m.persona}</td>
+                    <td>
+                      {m.tipo === 'entrada'
+                        ? m.persona_entrega || '-'
+                        : m.persona_responsable || '-'}
+                    </td>
+                    <td>{m.unidad_proceso || '-'}</td>
                     <td>{m.orden_trabajo || '-'}</td>
                     <td>{m.observaciones || '-'}</td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="6" className="no-datos">Este componente no tiene movimientos aún</td>
+                  <td colSpan="7" className="no-datos">Este componente no tiene movimientos aún</td>
                 </tr>
               )}
             </tbody>

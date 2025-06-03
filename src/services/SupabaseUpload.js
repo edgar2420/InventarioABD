@@ -1,19 +1,20 @@
 import axios from 'axios'
 
-export const subirImagen = async (file) => {
-  const formData = new FormData()
-  formData.append('imagen', file)
+const API_URL = import.meta.env.VITE_BACKEND_URL || 'https://backendinventario-v0gb.onrender.com'
 
+export const subirImagen = async (codigo, imagenFile) => {
   try {
-    const response = await axios.post(`${import.meta.env.VITE_API_URL}/subir-imagen`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+    const formData = new FormData()
+    formData.append('imagen', imagenFile)
+
+    const res = await axios.post(`${API_URL}/api/componente/${codigo}/subir-imagen`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
     })
 
-    return response.data.url
-  } catch (err) {
-    console.error('Error al subir imagen:', err)
+    return res.data.url
+  } catch (error) {
+    console.error('Error al subir imagen:', error)
     return null
   }
 }
+

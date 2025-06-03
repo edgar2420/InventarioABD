@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { editarComponente, obtenerComponentePorCodigo } from '../../../src/services/Componente'
 import { subirImagen } from '../../../src/services/SupabaseUpload'
 import { toast } from 'react-toastify'
+import { Upload, Trash2 } from 'lucide-react'
 import './editComponente.css'
 
 const EditComponente = () => {
@@ -13,19 +14,34 @@ const EditComponente = () => {
     descripcion: '',
     modelo: '',
     marca: '',
-    fabricante: '',
     cantidad: '',
-    imagen_url: ''
+    imagen_url: '',
+    clase_id: '',
+    tipo_id: ''
   })
+
   const [imagenFile, setImagenFile] = useState(null)
-  const [imagenEliminada, setImagenEliminada] = useState(false)
+  const [imagenPreview, setImagenPreview] = useState(null)
 
   useEffect(() => {
     const cargarDatos = async () => {
       try {
         const data = await obtenerComponentePorCodigo(codigo)
-        if (data) setFormulario(data)
-        else toast.error('Componente no encontrado')
+        if (data) {
+          setFormulario({
+            nombre: data.nombre || '',
+            descripcion: data.descripcion || '',
+            modelo: data.modelo || '',
+            marca: data.marca || '',
+            cantidad: data.cantidad || '',
+            imagen_url: data.imagen_url || '',
+            clase_id: data.clase_id || data.clase?.clase_id || '',
+            tipo_id: data.tipo_id || data.tipo?.tipo_id || ''
+          })
+          setImagenPreview(data.imagen_url || null)
+        } else {
+          toast.error('Componente no encontrado')
+        }
       } catch {
         toast.error('Error al cargar componente')
       }
@@ -40,14 +56,16 @@ const EditComponente = () => {
 
   const handleImagen = (e) => {
     const file = e.target.files[0]
-    setImagenFile(file)
-    setImagenEliminada(false)
+    if (file) {
+      setImagenFile(file)
+      setImagenPreview(URL.createObjectURL(file))
+    }
   }
 
-  const eliminarImagen = () => {
-    setFormulario(prev => ({ ...prev, imagen_url: '' }))
+  const borrarImagen = () => {
     setImagenFile(null)
-    setImagenEliminada(true)
+    setImagenPreview(null)
+    setFormulario(prev => ({ ...prev, imagen_url: '' }))
   }
 
   const handleSubmit = async (e) => {
@@ -56,18 +74,29 @@ const EditComponente = () => {
     try {
       let imagen_url = formulario.imagen_url
 
-      if (imagenEliminada) imagen_url = ''
       if (imagenFile) {
-        const nuevaUrl = await subirImagen(imagenFile, `componentes/${codigo}`)
-        if (nuevaUrl) imagen_url = nuevaUrl
-        else return toast.error('Error al subir imagen')
+        const nuevaUrl = await subirImagen(codigo, imagenFile)
+        if (!nuevaUrl) return toast.error('Error al subir imagen')
+        imagen_url = nuevaUrl
       }
 
-      await editarComponente(codigo, { ...formulario, imagen_url })
-      toast.success('Componente actualizado correctamente ✅')
+      const actualizado = {
+        nombre: formulario.nombre,
+        descripcion: formulario.descripcion,
+        modelo: formulario.modelo,
+        marca: formulario.marca,
+        cantidad: formulario.cantidad,
+        imagen_url: imagen_url,
+        clase_id: formulario.clase_id,
+        tipo_id: formulario.tipo_id
+      }
+
+      await editarComponente(codigo, actualizado)
+      toast.success('✅ Componente actualizado correctamente')
       navigate('/componentes')
-    } catch {
-      toast.error('Error al actualizar componente')
+    } catch (err) {
+      console.error(err)
+      toast.error('❌ Error al actualizar componente')
     }
   }
 
@@ -75,34 +104,47 @@ const EditComponente = () => {
     <div className="producto-container">
       <div className="form-box">
         <h2 className="titulo-lista">✏️ Editar Componente</h2>
+
         <form onSubmit={handleSubmit} className="form-grid">
-          <input type="text" name="nombre" value={formulario.nombre} onChange={handleChange} placeholder="Nombre" required />
-          <input type="text" name="descripcion" value={formulario.descripcion} onChange={handleChange} placeholder="Descripción" />
-          <input type="text" name="modelo" value={formulario.modelo} onChange={handleChange} placeholder="Modelo" />
-          <input type="text" name="marca" value={formulario.marca} onChange={handleChange} placeholder="Marca" />
-          <input type="text" name="fabricante" value={formulario.fabricante} onChange={handleChange} placeholder="Fabricante" />
+          <input name="nombre" value={formulario.nombre} onChange={handleChange} placeholder="Nombre" required />
+          <input name="descripcion" value={formulario.descripcion} onChange={handleChange} placeholder="Descripción" />
+          <input name="modelo" value={formulario.modelo} onChange={handleChange} placeholder="Modelo" />
+          <input name="marca" value={formulario.marca} onChange={handleChange} placeholder="Marca" />
+
           <input
             type="number"
             name="cantidad"
             value={formulario.cantidad}
             readOnly
             placeholder="Cantidad"
-            min="0"
             style={{ backgroundColor: '#f0f0f0', cursor: 'not-allowed' }}
           />
 
+          <div className="col-span-full">
+            <label className="text-sm font-semibold text-gray-700 mb-1 block">Imagen del componente</label>
+            <div className="flex gap-4 flex-wrap items-center">
+              <div className="w-24 h-24 border-2 border-dashed bg-gray-100 rounded-md flex items-center justify-center overflow-hidden">
+                {imagenPreview ? (
+                  <img src={imagenPreview} alt="preview" className="object-contain w-full h-full" />
+                ) : <span className="text-gray-400 text-sm">Vista previa</span>}
+              </div>
 
-          <label className="text-sm font-medium mt-4">Imagen del Componente</label>
-          {formulario.imagen_url && !imagenEliminada && (
-            <div className="imagen-preview">
-              <img src={formulario.imagen_url} alt="Vista previa" className="img-preview" />
-              <button type="button" className="btn-borrar" onClick={eliminarImagen}>Quitar imagen</button>
+              <div className="flex flex-col gap-2">
+                <label className="btn btn-subir cursor-pointer flex items-center gap-2">
+                  <Upload size={18} /> Subir imagen
+                  <input type="file" accept="image/*" onChange={handleImagen} className="hidden" />
+                </label>
+
+                {imagenPreview && (
+                  <button type="button" onClick={borrarImagen} className="btn-borrar flex items-center gap-2">
+                    <Trash2 size={18} /> Borrar
+                  </button>
+                )}
+              </div>
             </div>
-          )}
+          </div>
 
-          <input type="file" accept="image/*" onChange={handleImagen} />
-
-          <div className="form-buttons">
+          <div className="form-buttons col-span-full">
             <button type="submit" className="btn btn-guardar">Guardar Cambios</button>
             <button type="button" className="btn btn-cancelar" onClick={() => navigate('/componentes')}>Cancelar</button>
           </div>

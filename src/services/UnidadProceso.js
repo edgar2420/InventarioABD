@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_BASE = 'https://backendinventario-v0gb.onrender.com/api'
+const API_BASE = 'http://localhost:3000/api'
 
 // Obtener todas las unidades de proceso
 export const obtenerUnidadesProceso = async () => {

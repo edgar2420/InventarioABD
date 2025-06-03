@@ -49,22 +49,13 @@ const ListaComponentes = () => {
           </h2>
 
           <div className="lista-componentes-actions">
-            <button
-              onClick={() => setMostrarModal(true)}
-              className="lista-btn lista-btn-crear"
-            >
+            <button onClick={() => setMostrarModal(true)} className="lista-btn lista-btn-crear">
               <PlusCircle size={16} /> Crear Componente
             </button>
-            <button
-              onClick={() => navigate('/crear-clase')}
-              className="lista-btn lista-btn-clase"
-            >
+            <button onClick={() => navigate('/crear-clase')} className="lista-btn lista-btn-clase">
               <PlusCircle size={16} /> Crear Clase y Tipo
             </button>
-            <button
-              onClick={() => navigate('/crear-movimiento')}
-              className="lista-btn lista-btn-movimiento"
-            >
+            <button onClick={() => navigate('/crear-movimiento')} className="lista-btn lista-btn-movimiento">
               <Repeat size={16} /> Movimiento
             </button>
           </div>
@@ -85,15 +76,10 @@ const ListaComponentes = () => {
             <thead>
               <tr>
                 <th>Imagen</th>
-                <th>Código</th>
                 <th>Nombre</th>
-                <th>Clase</th>
-                <th>Tipo</th>
-                <th>Modelo</th>
-                <th>Marca</th>
-                <th>Fabricante</th>
-                <th>Descripción</th>
+                <th>Código</th>
                 <th>Cantidad</th>
+                <th>Modelo</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -116,15 +102,10 @@ const ListaComponentes = () => {
                         <span className="lista-componentes-no-image">Sin imagen</span>
                       )}
                     </td>
-                    <td>{c.codigo}</td>
                     <td>{c.nombre}</td>
-                    <td>{c.clase?.nombre || '-'}</td>
-                    <td>{c.tipo?.nombre || '-'}</td>
-                    <td>{c.modelo}</td>
-                    <td>{c.marca}</td>
-                    <td>{c.fabricante}</td>
-                    <td>{c.descripcion}</td>
+                    <td>{c.codigo}</td>
                     <td>{c.cantidad}</td>
+                    <td>{c.modelo}</td>
                     <td>
                       <div className="lista-componentes-actions-cell">
                         <button
@@ -148,7 +129,7 @@ const ListaComponentes = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="12" className="lista-componentes-no-data">
+                  <td colSpan="6" className="lista-componentes-no-data">
                     No hay componentes
                   </td>
                 </tr>

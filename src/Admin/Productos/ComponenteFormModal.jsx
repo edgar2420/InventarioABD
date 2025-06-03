@@ -3,7 +3,6 @@ import Select from 'react-select'
 import { crearComponente, subirImagen } from '../../../src/services/Componente'
 import { obtenerClases } from '../../../src/services/Clase'
 import { obtenerTiposPorClase } from '../../../src/services/Tipo'
-import { obtenerUnidadesProceso } from '../../../src/services/UnidadProceso'
 import { Upload, Trash2, ImagePlus, X } from 'lucide-react'
 import { toast } from 'react-toastify'
 import './productos.css'
@@ -14,35 +13,28 @@ const ComponenteFormModal = ({ visible, onClose, onGuardado }) => {
     descripcion: '',
     modelo: '',
     marca: '',
-    fabricante: '',
     cantidad: '',
     imagen_url: '',
     clase_id: '',
-    tipo_id: '',
-    unidad_proceso_id: ''
+    tipo_id: ''
   })
 
   const [clases, setClases] = useState([])
   const [tipos, setTipos] = useState([])
-  const [unidadesProceso, setUnidadesProceso] = useState([])
   const [imagenPreview, setImagenPreview] = useState(null)
   const [archivo, setArchivo] = useState(null)
   const [cargando, setCargando] = useState(false)
 
   useEffect(() => {
-    const cargarDatos = async () => {
+    const cargarClases = async () => {
       try {
-        const [clasesData, unidadesData] = await Promise.all([
-          obtenerClases(),
-          obtenerUnidadesProceso()
-        ])
+        const clasesData = await obtenerClases()
         setClases(clasesData)
-        setUnidadesProceso(unidadesData)
       } catch (err) {
-        console.error('Error al cargar opciones:', err)
+        console.error('Error al cargar clases:', err)
       }
     }
-    cargarDatos()
+    cargarClases()
   }, [])
 
   useEffect(() => {
@@ -139,7 +131,6 @@ const ComponenteFormModal = ({ visible, onClose, onGuardado }) => {
 
           <input name="modelo" value={form.modelo} onChange={handleChange} placeholder="Modelo" className="input" />
           <input name="marca" value={form.marca} onChange={handleChange} placeholder="Marca" className="input" />
-          <input name="fabricante" value={form.fabricante} onChange={handleChange} placeholder="Fabricante" className="input" />
 
           <input
             type="number"
@@ -149,15 +140,6 @@ const ComponenteFormModal = ({ visible, onClose, onGuardado }) => {
             min="0"
             className="input"
             onChange={(e) => setForm({ ...form, cantidad: e.target.value })}
-          />
-
-          <Select
-            classNamePrefix="select"
-            className="basic-select"
-            options={unidadesProceso.map(up => ({ value: up.id, label: up.nombre }))}
-            placeholder="Seleccione una Unidad de Proceso"
-            value={unidadesProceso.find(up => up.id === form.unidad_proceso_id) ? { value: form.unidad_proceso_id, label: unidadesProceso.find(up => up.id === form.unidad_proceso_id)?.nombre } : null}
-            onChange={(op) => setForm({ ...form, unidad_proceso_id: op?.value || '' })}
           />
 
           <div className="col-span-full">

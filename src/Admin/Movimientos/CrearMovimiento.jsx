@@ -1,25 +1,31 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Upload, ArrowLeft, CheckCircle2 } from 'lucide-react'
+import { Upload, ArrowLeft, CheckCircle2, Loader2 } from 'lucide-react'
 import Select from 'react-select'
+import { toast } from 'react-toastify'
 import { registrarMovimiento } from '../../../src/services/Movimiento'
 import { obtenerComponentes } from '../../services/Componente'
 import { obtenerTecnicos } from '../../services/Tecnicos'
+import { obtenerUnidadesProceso } from '../../services/UnidadProceso'
+import 'react-toastify/dist/ReactToastify.css'
 import './movimientos.css'
 
 const CrearMovimiento = () => {
   const navigate = useNavigate()
   const [componentes, setComponentes] = useState([])
   const [tecnicos, setTecnicos] = useState([])
+  const [unidades, setUnidades] = useState([])
   const [cantidadDisponible, setCantidadDisponible] = useState(null)
 
   const [form, setForm] = useState({
     componente_codigo: '',
     tipo: 'entrada',
     cantidad: '',
-    persona: '',
-    orden_trabajo: '',
-    motivo: ''
+    persona_id: '',
+    orden_tipo: '',
+    orden_numero: '',
+    motivo: '',
+    unidad_proceso_id: ''
   })
 
   const [cargando, setCargando] = useState(false)
@@ -27,12 +33,14 @@ const CrearMovimiento = () => {
   useEffect(() => {
     const cargar = async () => {
       try {
-        const [componentesData, tecnicosData] = await Promise.all([
+        const [componentesData, tecnicosData, unidadesData] = await Promise.all([
           obtenerComponentes(),
-          obtenerTecnicos()
+          obtenerTecnicos(),
+          obtenerUnidadesProceso()
         ])
         setComponentes(componentesData)
         setTecnicos(tecnicosData)
+        setUnidades(unidadesData)
       } catch (err) {
         console.error('Error al cargar datos:', err)
       }
@@ -40,32 +48,9 @@ const CrearMovimiento = () => {
     cargar()
   }, [])
 
-  const opcionesComponentes = componentes.map(c => ({
-    value: c.codigo,
-    label: `${c.codigo} - ${c.nombre}`
-  }))
-
-  const opcionesTecnicos = tecnicos.map(t => ({
-    value: t.nombre,
-    label: t.nombre
-  }))
-
-  const customSelectStyles = {
-    control: (base) => ({
-      ...base,
-      backgroundColor: '#fff',
-      borderColor: '#d1d5db',
-      borderRadius: '0.5rem',
-      fontSize: '0.95rem',
-      padding: '1px',
-      boxShadow: 'none',
-      '&:hover': { borderColor: '#2563eb' }
-    }),
-    menu: (base) => ({
-      ...base,
-      zIndex: 10
-    })
-  }
+  const opcionesComponentes = componentes.map(c => ({ value: c.codigo, label: `${c.codigo} - ${c.nombre}` }))
+  const opcionesTecnicos = tecnicos.map(t => ({ value: t.id, label: t.nombre }))
+  const opcionesUnidades = unidades.map(u => ({ value: u.id, label: u.nombre }))
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -74,14 +59,13 @@ const CrearMovimiento = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setCargando(true)
-
     try {
       await registrarMovimiento(form)
-      alert('Movimiento registrado correctamente')
+      toast.success('✅ Movimiento registrado correctamente')
       navigate('/componentes')
     } catch (err) {
       console.error(err)
-      alert('Error al registrar movimiento')
+      toast.error('❌ Error al registrar movimiento')
     } finally {
       setCargando(false)
     }
@@ -94,18 +78,13 @@ const CrearMovimiento = () => {
           <h2 className="text-blue-600 text-2xl font-bold flex items-center gap-2">
             <Upload size={24} /> Registrar Movimiento
           </h2>
-          <button
-            type="button"
-            onClick={() => navigate('/componentes')}
-            className="btn-navegacion"
-          >
+          <button type="button" onClick={() => navigate('/componentes')} className="btn-navegacion">
             <ArrowLeft size={18} /> Volver
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <Select
-            styles={customSelectStyles}
             options={opcionesComponentes}
             placeholder="Seleccionar Componente"
             value={form.componente_codigo ? opcionesComponentes.find(o => o.value === form.componente_codigo) : null}
@@ -113,7 +92,7 @@ const CrearMovimiento = () => {
               const codigo = opcion?.value || ''
               const seleccionado = componentes.find(c => c.codigo === codigo)
               setForm({ ...form, componente_codigo: codigo })
-              setCantidadDisponible(seleccionado?.cantidad || 0)
+              setCantidadDisponible(seleccionado?.cantidad ?? null)
             }}
           />
 
@@ -124,7 +103,6 @@ const CrearMovimiento = () => {
           )}
 
           <Select
-            styles={customSelectStyles}
             options={[{ value: 'entrada', label: 'Entrada' }, { value: 'salida', label: 'Salida' }]}
             value={{ value: form.tipo, label: form.tipo.charAt(0).toUpperCase() + form.tipo.slice(1) }}
             onChange={(op) => setForm({ ...form, tipo: op.value })}
@@ -144,21 +122,49 @@ const CrearMovimiento = () => {
             }}
           />
 
-          <Select
-            styles={customSelectStyles}
-            options={opcionesTecnicos}
-            placeholder="Persona Responsable"
-            value={form.persona ? opcionesTecnicos.find(t => t.value === form.persona) : null}
-            onChange={(op) => setForm({ ...form, persona: op?.value || '' })}
-          />
+          {form.tipo === 'entrada' && (
+            <Select
+              options={opcionesTecnicos}
+              placeholder="Persona que entrega"
+              value={form.persona_id ? opcionesTecnicos.find(t => t.value === form.persona_id) : null}
+              onChange={(op) => setForm({ ...form, persona_id: op?.value || '' })}
+            />
+          )}
 
-          <input
-            name="orden_trabajo"
-            value={form.orden_trabajo}
-            onChange={handleChange}
-            placeholder="Orden de Trabajo (opcional)"
-            className="input"
-          />
+          {form.tipo === 'salida' && (
+            <>
+              <div className="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <Select
+                  options={[{ value: 'OTP', label: 'OTP (Preventivo)' }, { value: 'OTN', label: 'OTN (No Programado)' }]}
+                  placeholder="Tipo de Orden"
+                  value={form.orden_tipo ? { value: form.orden_tipo, label: form.orden_tipo } : null}
+                  onChange={(op) => setForm({ ...form, orden_tipo: op?.value || '' })}
+                />
+
+                <input
+                  type="text"
+                  placeholder="Código de Orden"
+                  className="input"
+                  value={form.orden_numero}
+                  onChange={(e) => setForm({ ...form, orden_numero: e.target.value })}
+                />
+              </div>
+
+              <Select
+                options={opcionesUnidades}
+                placeholder="Unidad de Proceso"
+                value={form.unidad_proceso_id ? opcionesUnidades.find(u => u.value === form.unidad_proceso_id) : null}
+                onChange={(op) => setForm({ ...form, unidad_proceso_id: op?.value || '' })}
+              />
+
+              <Select
+                options={opcionesTecnicos}
+                placeholder="Responsable"
+                value={form.persona_id ? opcionesTecnicos.find(t => t.value === form.persona_id) : null}
+                onChange={(op) => setForm({ ...form, persona_id: op?.value || '' })}
+              />
+            </>
+          )}
 
           <textarea
             name="motivo"
@@ -174,7 +180,9 @@ const CrearMovimiento = () => {
             disabled={cargando}
             className="col-span-full btn btn-guardar flex items-center justify-center gap-2"
           >
-            {cargando ? 'Guardando...' : <><CheckCircle2 size={18} /> Guardar Movimiento</>}
+            {cargando
+              ? <><Loader2 size={18} className="animate-spin" /> Guardando...</>
+              : <><CheckCircle2 size={18} /> Guardar Movimiento</>}
           </button>
         </form>
       </div>

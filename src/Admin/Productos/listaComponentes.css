@@ -102,18 +102,19 @@
 
 .lista-componentes-table {
   width: 100%;
-  min-width: 1200px;
   border-collapse: collapse;
+  table-layout: auto;
+  min-width: unset;
 }
 
-.lista-componentes-table th,
-.lista-componentes-table td {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid #e5e7eb;
-  font-size: 0.95rem;
-  text-align: left;
-  white-space: nowrap;
+
+.lista-componentes-table td,
+.lista-componentes-table th {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
 
 .lista-componentes-table th {
   background-color: #f3f4f6;
@@ -138,6 +139,7 @@
   border-radius: 6px;
   border: 1px solid #e5e7eb;
 }
+
 
 .lista-componentes-no-image {
   font-style: italic;
