@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_BASE = 'http://localhost:3000/api'
+const API_BASE = 'https://backendinventario-dlaq.onrender.com/api'
 
 // Obtener Clase
 export const obtenerClases = async () => {
