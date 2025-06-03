@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = import.meta.env.VITE_BACKEND_URL || 'https://backendinventario-v0gb.onrender.com'
+const API_URL = import.meta.env.VITE_BACKEND_URL || 'https://backendinventario-dlaq.onrender.com'
 
 export const subirImagen = async (codigo, imagenFile) => {
   try {
