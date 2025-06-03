@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_BASE = 'http://localhost:3000/api'
+const API_BASE = 'https://backendinventario-dlaq.onrender.com/api'
 
 // Registrar un nuevo movimiento
 export const registrarMovimiento = async (datos) => {
